@@ -1,0 +1,44 @@
+name: CI Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  frontend_release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install & Build Frontend
+        run: |
+          npm install
+          npm run build
+        working-directory: ./frontend
+      - name: Upload Frontend Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend
+          path: ./frontend/build
+
+  backend_release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+      - name: Build & Publish Backend
+        run: |
+          dotnet publish -c Release -o ./publish
+        working-directory: ./backend
+      - name: Upload Backend Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: backend
+          path: ./backend/publish
