@@ -1,4 +1,4 @@
-name: CI Release
+name: CI Release + Deploy
 
 on:
   push:
@@ -42,3 +42,23 @@ jobs:
         with:
           name: backend
           path: ./backend/publish
+
+  deploy:
+    needs: [frontend_release, backend_release]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Frontend Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend
+          path: ./deploy/frontend
+
+      - name: Download Backend Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: backend
+          path: ./deploy/backend
+
+      - name: Deploy
+        run: |
+          echo "Frontend and Backend artifacts are ready for deployment"
