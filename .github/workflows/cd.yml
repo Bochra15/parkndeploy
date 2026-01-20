@@ -1,0 +1,27 @@
+name: CD Deployment
+
+on:
+  workflow_run:
+    workflows: ["CI Release"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Frontend Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: frontend
+          path: ./deploy/frontend
+
+      - name: Download Backend Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: backend
+          path: ./deploy/backend
+
+      - name: Deploy
+        run: |
+          echo "Frontend and Backend artifacts are ready for deployment"
