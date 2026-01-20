@@ -23,7 +23,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: frontend
-          path: ./frontend/build
+          path: ./frontend/build/**/*
 
   backend_release:
     runs-on: ubuntu-latest
@@ -41,7 +41,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: backend
-          path: ./backend/publish
+          path: ./backend/publish/**/*
 
   deploy:
     needs: [frontend_release, backend_release]
