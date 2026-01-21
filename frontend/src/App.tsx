@@ -7,6 +7,7 @@ import ParkingList from "@/components/ParkingList/ParkingList";
 import { LoadingSpinner } from "@/components/ui/loadingspinner";
 import ParkingListFilters from "@/components/ParkingList/ParkingListFilters";
 import { useParkingSearchStore } from "@/stores/parkingSearchStore";
+const appVersion = import.meta.env.VITE_APP_VERSION ?? "dev";
 
 function App() {
   const { parkingName } = useParkingSearchStore();
@@ -22,7 +23,7 @@ function App() {
     <div className="flex flex-col gap-5 items-center">
       <h1 className="text-2xl font-bold text-center">
         Where can I Park in Angers ? 👀
-        App version: {APP_VERSION}
+        App version: {appVersion}
       </h1>
       <ParkingListFilters
         onChange={(parkingName: string) => {

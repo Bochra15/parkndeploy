@@ -1,2 +1,11 @@
 /// <reference types="vite/client" />
-declare const  APP_VERSION: string;
+/// <reference types="vite/client" />
+
+interface ImportMetaEnv {
+  readonly VITE_APP_VERSION: string
+  // tu peux ajouter d'autres variables d'environnement ici
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv
+}
