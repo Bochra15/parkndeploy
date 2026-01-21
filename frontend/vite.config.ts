@@ -19,7 +19,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
     },
   },  
-  define:{APP_VERSION : JSON.stringify(process.env.VITE_APP_VERSION)
+  define:{APP_VERSION : JSON.stringify(process.env.npm_package_version)
 
   },
   plugins: [react()],

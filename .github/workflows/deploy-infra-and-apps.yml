@@ -25,20 +25,33 @@ jobs:
         with:
           node-version: 18
 
+      # ── NOUVELLE ÉTAPE : mettre à jour package.json avec le tag ──
+      - name: Set frontend version from Git tag
+        working-directory: ./frontend
+        run: |
+          TAG_VERSION=${GITHUB_REF_NAME#v}   # supprime le "v" du tag, ex: v2.1.0 → 2.1.0
+          echo "Setting package.json version to $TAG_VERSION"
+          npm install jq || echo "jq already installed or failed"   # si nécessaire
+          jq --arg v "$TAG_VERSION" '.version=$v' package.json > package.tmp.json
+          mv package.tmp.json package.json
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add package.json
+          git commit -m "chore: bump frontend version to $TAG_VERSION [skip ci]" || echo "No changes to commit"
+          git push origin HEAD:${GITHUB_REF_NAME#refs/tags/} || echo "Push failed (probably tag ref)"
+
       - name: Install & Build Frontend
         working-directory: ./frontend
-        env:
-          VITE_APP_VERSION: ${{ github.ref_name }}
         run: |
           npm install
           npm run build
-      
 
       - name: Upload Frontend Artifact
         uses: actions/upload-artifact@v4
         with:
           name: frontend
           path: ./frontend/dist/**
+
 
 # =========================
 # BACKEND BUILD
