@@ -130,6 +130,7 @@ jobs:
           app-name: ${{ needs.deploy_infrastructure.outputs.appServiceName }}
           package: ./backend/publish
 
+
 # =========================
 # DEPLOY FRONTEND
 # =========================
